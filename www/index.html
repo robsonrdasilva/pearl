@@ -7,7 +7,7 @@
 <meta content="yes" name="apple-mobile-web-app-capable" />
 <meta content="minimum-scale=1.0, width=device-width, maximum-scale=1, user-scalable=no" name="viewport" />
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<script type="text/javascript" src="www/js/jquery.min.js"></script>
 <script type="text/javascript" src="www/js/jquery.mask.min.js"></script>
 
 <link href="https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -21,6 +21,7 @@ $(document).ready(function() {
 	$('[name="telefone"]').mask('(99) 99999-9999');
 
 	url_app = 'http://www.pearldrumbrasil.com.br/app/app/';
+	//url_app = 'http://localhost/pearl/app/';
 
 	load_noticias = function(tipo){
 		$('.noticias .menu-noticias li').removeClass('selected');
@@ -158,7 +159,7 @@ $(document).ready(function() {
 			}
 			else
 			{
-				alerta('Houve um erro ao fazer seu cadasro, tente novamente.');
+				alerta('Houve um erro ao fazer seu cadastro, tente novamente.');
 			}
 		});
 	});
@@ -166,12 +167,15 @@ $(document).ready(function() {
 	$('.menu li').click(function(){
 		$('.noticias, .nota, .retirar, .usuario').stop(true,true).fadeOut('slow');
 
-		if($(this).index() == 0){ $('.noticias:eq(0)').stop(true,true).fadeIn('slow'); }
-		if($(this).index() == 1){ $('.nota').stop(true,true).fadeIn('slow'); }
-		if($(this).index() == 2){ $('.retirar').stop(true,true).fadeIn('slow'); }
-		if($(this).index() == 3){ $('.usuario').stop(true,true).fadeIn('slow'); }
-		if($(this).index() == 4){ $('.faq').stop(true,true).fadeIn('slow'); }
-		if($(this).index() == 5){ $('.login').stop(true,true).fadeIn('slow'); $('.box-menu').stop(true,true).fadeIn('slow'); $('.login :input').val(''); }
+		if($(this).index() == 0){ $('.noticias:eq(0)').stop(true,true).fadeIn('slow', function(){$('.noticias .menu-noticias li:eq(0)').click();}); }
+		if($(this).index() == 1){ $('.noticias:eq(0)').stop(true,true).fadeIn('slow', function(){$('.noticias .menu-noticias li:eq(1)').click();}); }
+		if($(this).index() == 2){ $('.nota').stop(true,true).fadeIn('slow'); }
+		if($(this).index() == 3){ $('.retirar').stop(true,true).fadeIn('slow'); }
+		if($(this).index() == 4){ $('.usuario').stop(true,true).fadeIn('slow'); }
+		if($(this).index() == 5){ $('.faq').stop(true,true).fadeIn('slow'); }
+		if($(this).index() == 6){ location = 'http://www.pearldrumbrasil.com.br'; }
+		//if($(this).index() == 7){ $('.login').stop(true,true).fadeIn('slow'); $('.box-menu').stop(true,true).fadeIn('slow'); $('.login :input').val(''); }
+		if($(this).index() == 7){ location.reload(); }
 
 		$('.menu .close').click();
 
@@ -306,7 +310,7 @@ $(document).ready(function() {
 		$.get(url_app+'faq.php', $(this).serialize(), function(data){ console.log(data);
 			$('.loading-full').fadeOut('slow');
 
-			alerta('FAQ enviado com sucesso. Aguarde nosso contato.');
+			alerta('SAC enviado com sucesso. Aguarde nosso contato.');
 
 			$('.faq form').find('input[type="text"], input[type="email"], textarea').val('');	
 			$('.nota table tbody').empty();
@@ -371,16 +375,22 @@ $(document).ready(function() {
 						<div class="label">Notícias</div>
 					</li>
 					<li>
+						<div class="label">Eventos</div>
+					</li>
+					<li>
 						<div class="label">Enviar nota fiscal</div>
 					</li>
 					<li>
-						<div class="label">Retirar prêmios</div>
+						<div class="label">Brindes Pearl</div>
 					</li>
 					<li>
 						<div class="label">Meus dados</div>
 					</li>
 					<li>
-						<div class="label">FAQ</div>
+						<div class="label">SAC</div>
+					</li>
+					<li>
+						<div class="label">Site Pearl</div>
 					</li>
 					<li>
 						<div class="label">Sair</div>
@@ -418,6 +428,11 @@ $(document).ready(function() {
 			<div class="box">			
 				<div class="content">
 					<form class="form2">
+						<div class="titulo">Enviar nota fiscal</div>
+						<p>
+							TROQUE SEUS PONTOS POR BRINDES EXCLUSIVOS: <br>
+							Sempre que comprar um produto Pearl mande sua nota fiscal, acumule pontos e troque por brindes exclusivos.
+						</p>
 						<input type="hidden" name="id_usuario">
 						<input type="text" name="cpf" required placeholder="CPF">
 						<input type="text" name="telefone" required placeholder="Telefone">
@@ -452,6 +467,11 @@ $(document).ready(function() {
 			<div class="box">
 				<div class="content">
 					<form class="form2">
+						<div class="titulo">Brindes Pearl</div>
+						<p>
+							VEJA A SUA PONTUAÇÃO<br>
+							Suas notas fiscais estão acumulando pontos, veja o que você já ganhou. Acumule mais e troque por brindes ainda mais valiosos.
+						</p>
 						<input type="hidden" name="id_usuario">
 						<div class="retorno"></div>		
 						<button>Retirar prêmio</button>
@@ -478,7 +498,7 @@ $(document).ready(function() {
 			<div class="box">
 				<div class="content">
 					<form class="form2">
-						<div class="titulo">FAQ</div>
+						<div class="titulo">SAC</div>
 						<p>Entre em contato pelo formulário abaixo</p>
 						<input type="text" name="nome" required placeholder="Nome">
 						<input type="text" name="telefone" required placeholder="Telefone">
