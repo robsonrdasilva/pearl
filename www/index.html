@@ -21,7 +21,6 @@ $(document).ready(function() {
 	$('[name="telefone"]').mask('(99) 99999-9999');
 
 	url_app = 'http://www.pearldrumbrasil.com.br/app/app/';
-	//url_app = 'http://localhost/pearl/app/';
 
 	load_noticias = function(tipo){
 		$('.noticias .menu-noticias li').removeClass('selected');
@@ -119,6 +118,9 @@ $(document).ready(function() {
 			{
 				alerta('Usuário ou senha inválido(s)');
 			}
+		}).fail(function(){
+			alert('Verifique sua conexão');
+			$('.loading-full').fadeOut('slow');
 		});
 	});
 
