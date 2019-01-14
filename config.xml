@@ -8,5 +8,5 @@
         Pearl
     </author>
     <content src="index.html" />
-    <access origin="http://www.pearldrumbrasil.com.br/" />
+    <access origin="*" launch-external="yes" />
 </widget>
