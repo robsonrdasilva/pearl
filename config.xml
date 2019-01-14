@@ -7,9 +7,5 @@
     <author email="SAC@PEARL-LATINAMERICA.COM" href="http://www.pearldrumbrasil.com.br/">
         Pearl
     </author>
-    <content src="index.html" />
-    <access origin="http://127.0.0.1*"/> <!-- allow local pages -->
-	<access origin="http://www.pearldrumbrasil.com.br" />
-	<access origin="http://www.pearldrumbrasil.com.br" subdomains="true" />
-	<access origin=".*"/>
+	<access origin="*"/>
 </widget>
