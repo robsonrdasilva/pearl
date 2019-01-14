@@ -8,5 +8,8 @@
         Pearl
     </author>
     <content src="index.html" />
-    <access origin="*" launch-external="yes" />
+    <access origin="http://127.0.0.1*"/> <!-- allow local pages -->
+	<access origin="http://www.pearldrumbrasil.com.br" />
+	<access origin="http://www.pearldrumbrasil.com.br" subdomains="true" />
+	<access origin=".*"/>
 </widget>
