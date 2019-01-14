@@ -7,7 +7,7 @@
 <meta content="yes" name="apple-mobile-web-app-capable" />
 <meta content="minimum-scale=1.0, width=device-width, maximum-scale=1, user-scalable=no" name="viewport" />
 
-<script type="text/javascript" src="www/js/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
 <script type="text/javascript" src="www/js/jquery.mask.min.js"></script>
 
 <link href="https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -26,7 +26,7 @@ $(document).ready(function() {
 		$('.noticias .menu-noticias li').removeClass('selected');
 		$('.noticias:first .lista').empty();
 
-		$.post(url_app+'noticias.php', {'tipo':tipo}, function(data){
+		$.get(url_app+'noticias.php', {'tipo':tipo}, function(data){
 			data = $.parseJSON(data);
 
 			for(i = 0; i < data.length; i++)
@@ -50,7 +50,7 @@ $(document).ready(function() {
 		load_noticias();
 
 		$('.retirar .retorno').empty();
-		$.post(url_app+'produtos.php', function(data){
+		$.get(url_app+'produtos.php', function(data){
 			data = $.parseJSON(data);
 
 			for(i = 0; i < data.length; i++)
@@ -69,7 +69,7 @@ $(document).ready(function() {
 			};			
 		});
 
-		$.post(url_app+'produtos_pearl.php', function(data){
+		$.get(url_app+'produtos_pearl.php', function(data){
 			data = $.parseJSON(data);
 			$('[name="id_produto_select"]').html('<option value="">Selecione um produto</option>');
 
@@ -93,7 +93,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		$('.loading-full').fadeIn('slow');
-		$.post(url_app+'login.php', $(this).serialize(), function(data){
+		$.get(url_app+'login.php', $(this).serialize(), function(data){
 			$('.loading-full').fadeOut('slow');
 
 			data = $.parseJSON(data);
@@ -135,7 +135,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
     	$('.loading-full').fadeIn('slow');
-		$.post(url_app+'cadastro.php', $(this).serialize(), function(data){
+		$.get(url_app+'cadastro.php', $(this).serialize(), function(data){
 			$('.loading-full').fadeOut('slow');
 
 			data = $.parseJSON(data);
@@ -181,7 +181,7 @@ $(document).ready(function() {
 	$('.noticias:first .noticia .ver').live('click', function(e){
 		e.preventDefault();
 
-		$.post(url_app+'noticia.php', {'id_noticia':$(this).parents('[data-id]').attr('data-id')}, function(data){
+		$.get(url_app+'noticia.php', {'id_noticia':$(this).parents('[data-id]').attr('data-id')}, function(data){
 			noticia = $.parseJSON(data);
 
 			$('.noticias, .nota, .retirar, .usuario').stop(true,true).fadeOut('slow');
@@ -220,7 +220,7 @@ $(document).ready(function() {
     	e.preventDefault();
 
     	$('.loading-full').fadeIn('slow');
-		$.post(url_app+'cadastro_editar.php', $(this).serialize(), function(data){
+		$.get(url_app+'cadastro_editar.php', $(this).serialize(), function(data){
 			$('.loading-full').fadeOut('slow');
 
 			data = $.parseJSON(data);
@@ -234,7 +234,7 @@ $(document).ready(function() {
     	e.preventDefault();
 
     	$('.loading-full').fadeIn('slow');
-		$.post(url_app+'nota.php', $(this).serialize(), function(data){
+		$.get(url_app+'nota.php', $(this).serialize(), function(data){
 			$('.loading-full').fadeOut('slow');
 
 			alerta('Nota enviada com sucesso!');
@@ -257,7 +257,7 @@ $(document).ready(function() {
     	else
     	{
     		$('.loading-full').fadeIn('slow');
-			$.post(url_app+'retirada.php', $(this).serialize(), function(data){
+			$.get(url_app+'retirada.php', $(this).serialize(), function(data){
 				$('.loading-full').fadeOut('slow');
 
 				data = $.parseJSON(data);
@@ -303,7 +303,7 @@ $(document).ready(function() {
     	e.preventDefault();
 
     	$('.loading-full').fadeIn('slow');
-		$.post(url_app+'faq.php', $(this).serialize(), function(data){ console.log(data);
+		$.get(url_app+'faq.php', $(this).serialize(), function(data){ console.log(data);
 			$('.loading-full').fadeOut('slow');
 
 			alerta('FAQ enviado com sucesso. Aguarde nosso contato.');
