@@ -167,7 +167,7 @@ input, select, textarea, button {outline:0;}
 .alert-full {position:fixed;z-index:99;left:0;right:0;top:0;bottom:0;overflow:auto;background:rgba(0, 0, 0, 0.7);display:none;}
 .alert-full .content-alert {padding:20px 40px;background:white;top:50%;left:50%;z-index:3;transform:translateX(-50%);position:absolute;margin-top:-30px;color:#fe9900;font-weight:700;font-size:18px;}
 
-.mobile-box {display:table;margin:0 auto;width:420px;position:relative;}
+.mobile-box {display:table;margin:0 auto;width:100%;position:relative;min-width:320px;max-width:620px;}
 
 .form input,
 .form select {border-radius:4px;background:white;height:37px;display:block;margin-bottom:12px;padding-left:15px;width:calc(100% - 15px);border:0px;font-size:13px;}
