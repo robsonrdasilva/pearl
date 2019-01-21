@@ -58,7 +58,6 @@
 
         $.get('http://www.pearldrumbrasil.com.br/app/app/noticias.php', {'tipo':'noticia'}, function(data){
             data = $.parseJSON(data);
-
             alert(data[0].titulo);
         });
     </script>
