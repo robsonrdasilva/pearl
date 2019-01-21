@@ -16,6 +16,11 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
+	$.get('http://www.pearldrumbrasil.com.br/app/app/noticias.php', {'tipo':'noticia'}, function(data){
+        data = $.parseJSON(data);
+        alert(data[0].titulo);
+    });
+
 	$('[name="data"]').mask('99/99/9999');
 	$('[name="cpf"]').mask('999.999.999-99');
 	$('[name="telefone"]').mask('(99) 99999-9999');
