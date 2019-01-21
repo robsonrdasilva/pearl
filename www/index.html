@@ -232,7 +232,10 @@ $(document).ready(function() {
 		if($(this).index() == 6){ $('.sac').stop(true,true).fadeIn('slow'); }
 		if($(this).index() == 7){ location = 'http://www.pearldrumbrasil.com.br'; }
 		//if($(this).index() == 8){ $('.login').stop(true,true).fadeIn('slow'); $('.box-menu').stop(true,true).fadeIn('slow'); $('.login :input').val(''); }
-		if($(this).index() == 9){ location.reload(); }
+		if($(this).index() == 8){
+			$('.login').fadeIn('slow');
+			$('.box-menu').fadeOut('slow');
+		}
 
 		$('.menu .close').click();
 
