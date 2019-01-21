@@ -1,26 +1,5 @@
-<!DOCTYPE html>
-<!--
-    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
-
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<<<<<<< HEAD
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Pearl Drums - APP</title>
@@ -37,16 +16,12 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-	$.get('http://www.pearldrumbrasil.com.br/app/app/noticias.php', {'tipo':'noticia'}, function(data){
-        data = $.parseJSON(data);
-        alert(data[0].titulo);
-    });
-
 	$('[name="data"]').mask('99/99/9999');
 	$('[name="cpf"]').mask('999.999.999-99');
 	$('[name="telefone"]').mask('(99) 99999-9999');
 
 	url_app = 'http://www.pearldrumbrasil.com.br/app/app/';
+	//url_app = 'http://localhost/pearl/app/';
 
 	load_noticias = function(tipo){
 		$('.noticias .menu-noticias li').removeClass('selected');
@@ -69,6 +44,9 @@ $(document).ready(function() {
 				}
 				catch(e){}	
 			};			
+		}).fail(function(){
+			alerta('Verifique sua conexão');
+			$('.loading-full').fadeOut('slow');
 		});
 	}
 
@@ -93,6 +71,9 @@ $(document).ready(function() {
 					$('.retirar .produto:last .foto').html('<img src="'+produto.fotos[0]+'">');
 				}
 			};			
+		}).fail(function(){
+			alerta('Verifique sua conexão');
+			$('.loading-full').fadeOut('slow');
 		});
 
 		$.get(url_app+'produtos_pearl.php', function(data){
@@ -105,6 +86,9 @@ $(document).ready(function() {
 
 				$('[name="id_produto_select"]').append('<option value="'+produto.id_produto+'">'+produto.nome+'</option>');
 			};					
+		}).fail(function(){
+			alerta('Verifique sua conexão');
+			$('.loading-full').fadeOut('slow');
 		});
 	}
 
@@ -113,41 +97,77 @@ $(document).ready(function() {
 		$('.noticias:first').fadeIn('slow');
 	});
 
-	$('.login').fadeIn('slow');
+	$('.entrada').animate({'opacity':'1', 'margin-left':'0px'}, 'slow', function(){
+		$('.entrada .sk-circle').fadeIn('slow');
+
+		setTimeout(function(){
+			$('.entrada .sk-circle').fadeOut('slow', function(){
+				$('.entrada').animate({'opacity':'0', 'margin-left':'-300px'}, 'slow', function(){
+					$(this).hide();
+				});
+
+				$('.login').fadeIn('slow');
+			});			
+		}, 3000);
+	});
 
 	$('.login form').submit(function(e){
 		e.preventDefault();
 
-		$('.loading-full').fadeIn('slow');
-		$.get(url_app+'login.php', $(this).serialize(), function(data){
-			$('.loading-full').fadeOut('slow');
+		if($('.login [name="senha"]').is(':visible'))
+		{
+			$('.loading-full').fadeIn('slow');
+			$.get(url_app+'login.php', $(this).serialize(), function(data){
+				$('.loading-full').fadeOut('slow');
 
-			data = $.parseJSON(data);
-			if(data.id_usuario > 0)
-			{
-				$('.login').fadeOut('slow');
-				$('.noticias:eq(0)').fadeIn('slow');
-				$('.box-menu').fadeIn('slow');
+				data = $.parseJSON(data);
+				if(data.id_usuario > 0)
+				{
+					$('.login').fadeOut('slow');
+					$('.noticias:eq(0)').fadeIn('slow');
+					$('.box-menu').fadeIn('slow');
 
-				$('.ola span').html(data.nome);
-				$('.pontos span').html(data.pontos);
+					$('.ola span').html(data.nome);
+					$('.pontos span').html(data.pontos);
 
-				$('[name="id_usuario"]').val(data.id_usuario);
-				$('.usuario [name="nome"]').val(data.nome);
-				$('.usuario [name="cpf"]').val(data.cpf);
-				$('.usuario [name="telefone"]').val(data.telefone);
-				$('.usuario [name="email"]').val(data.email);	
+					$('[name="id_usuario"]').val(data.id_usuario);
+					$('.usuario [name="nome"]').val(data.nome);
+					$('.usuario [name="cpf"]').val(data.cpf);
+					$('.usuario [name="telefone"]').val(data.telefone);
+					$('.usuario [name="email"]').val(data.email);	
 
-				load_app();			
-			}
-			else
-			{
-				alerta('Usuário ou senha inválido(s)');
-			}
-		}).fail(function(){
-			alert('Verifique sua conexão');
-			$('.loading-full').fadeOut('slow');
-		});
+					load_app();			
+				}
+				else
+				{
+					alerta('Usuário ou senha inválido(s)');
+				}
+			}).fail(function(){
+				alerta('Verifique sua conexão');
+				$('.loading-full').fadeOut('slow');
+			});
+		}
+		else
+		{
+			$('.loading-full').fadeIn('slow');
+			$.get(url_app+'forgot.php', $(this).serialize(), function(data){
+				$('.loading-full').fadeOut('slow');
+
+				data = $.parseJSON(data);
+				if(data.id_usuario > 0)
+				{
+					alerta('Uma nova senha foi enviada para o seu e-mail');		
+					$('.esqueci').click();
+				}
+				else
+				{
+					alerta('Usuário não encontrado');
+				}
+			}).fail(function(){
+				alerta('Verifique sua conexão');
+				$('.loading-full').fadeOut('slow');
+			});
+		}
 	});
 
 	$('.cadastre-se').click(function(){
@@ -180,6 +200,8 @@ $(document).ready(function() {
 				$('[name="id_usuario"]').val(data.id_usuario);
 				$('.usuario [name="nome"]').val(data.nome);
 				$('.usuario [name="cpf"]').val(data.cpf);
+				$('.usuario [name="cidade"]').val(data.cidade);
+				$('.usuario [name="estado"]').val(data.estado);
 				$('.usuario [name="telefone"]').val(data.telefone);
 				$('.usuario [name="email"]').val(data.email);	
 
@@ -189,54 +211,468 @@ $(document).ready(function() {
 			{
 				alerta('Houve um erro ao fazer seu cadastro, tente novamente.');
 			}
+		}).fail(function(){
+			alerta('Verifique sua conexão');
+			$('.loading-full').fadeOut('slow');
 		});
 	});
 
 	$('.menu li').click(function(){
 		$('.noticias, .nota, .retirar, .usuario').stop(true,true).fadeOut('slow');
-=======
->>>>>>> 43bbd159048e9d73b00c6863d6a0e64c7564b93b
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="format-detection" content="telephone=no" />
-    <meta name="msapplication-tap-highlight" content="no" />
-    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
-    <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
-    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
-    <!-- Good default declaration:
-    * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
-    * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
-    * Disables use of eval() and inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
-        * Enable inline JS: add 'unsafe-inline' to default-src
-        * Enable eval(): add 'unsafe-eval' to default-src
-    * Create your own at http://cspisawesome.com
-    -->
-    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
+		if($(this).index() == 0){ $('.noticias:eq(0)').stop(true,true).fadeIn('slow'); load_noticias(); }
+		if($(this).index() == 1){ $('.noticias:eq(0)').stop(true,true).fadeIn('slow', function(){$('.noticias .menu-noticias li:eq(0)').click();}); }
+		if($(this).index() == 2){ $('.noticias:eq(0)').stop(true,true).fadeIn('slow', function(){$('.noticias .menu-noticias li:eq(1)').click();}); }
+		if($(this).index() == 3){ $('.nota').stop(true,true).fadeIn('slow'); }
+		if($(this).index() == 4){ $('.retirar').stop(true,true).fadeIn('slow'); }
+		if($(this).index() == 5){ $('.usuario').stop(true,true).fadeIn('slow'); }
+		if($(this).index() == 6){ $('.sac').stop(true,true).fadeIn('slow'); }
+		if($(this).index() == 7){ location = 'http://www.pearldrumbrasil.com.br'; }
+		//if($(this).index() == 8){ $('.login').stop(true,true).fadeIn('slow'); $('.box-menu').stop(true,true).fadeIn('slow'); $('.login :input').val(''); }
+		if($(this).index() == 9){ location.reload(); }
 
-    <link rel="stylesheet" type="text/css" href="css/index.css" />
-    <title>Hello World</title>
+		$('.menu .close').click();
+
+		load_app();
+	});
+
+	$('.noticias:first .noticia .ver').live('click', function(e){
+		e.preventDefault();
+
+		$.get(url_app+'noticia.php', {'id_noticia':$(this).parents('[data-id]').attr('data-id')}, function(data){
+			noticia = $.parseJSON(data);
+
+			$('.noticias, .nota, .retirar, .usuario').stop(true,true).fadeOut('slow');
+			$('.noticias:eq(1)').fadeIn('slow');			
+
+			$('.noticias:eq(1) .lista').html('<div class="noticia">'+$('.elementos .noticia:last').html()+'</div>');
+			$('.noticias:eq(1) .noticia .titulo').html(noticia.titulo);
+			$('.noticias:eq(1) .noticia .data').html(noticia.data);
+			$('.noticias:eq(1) .noticia .texto').html(noticia.texto);
+
+			$('html, body').animate({scrollTop:0});
+
+			try
+			{
+				$('.noticias:eq(1) .noticia .foto').html('<img src="'+noticia.fotos[0]+'">');
+			}
+			catch(e){}				
+		}).fail(function(){
+			alerta('Verifique sua conexão');
+			$('.loading-full').fadeOut('slow');
+		});	
+	});
+
+	$('.noticias .menu-noticias li').click(function(){
+		load_noticias($(this).attr('tipo'));
+		
+		$(this).addClass('selected');
+	});
+
+	alerta = function(mensagem){
+    	$('.alert-full .content-alert').html(mensagem);
+
+    	$('.alert-full').fadeIn('slow', function(){
+    		$('.alert-full').delay(2000).fadeOut('slow');
+    	});
+    }
+
+    $('.usuario form').submit(function(e){
+    	e.preventDefault();
+
+    	$('.loading-full').fadeIn('slow');
+		$.get(url_app+'cadastro_editar.php', $(this).serialize(), function(data){
+			$('.loading-full').fadeOut('slow');
+
+			data = $.parseJSON(data);
+			$('.ola span').html(data.nome);
+
+			alerta('Cadastro editado com sucesso!');
+		}).fail(function(){
+			alerta('Verifique sua conexão');
+			$('.loading-full').fadeOut('slow');
+		});
+    });
+
+    $('.nota form').submit(function(e){
+    	e.preventDefault();
+
+    	$('.loading-full').fadeIn('slow');
+		$.post(url_app+'nota.php', $(this).serialize(), function(data){
+			$('.loading-full').fadeOut('slow');
+
+			alerta('Nota enviada com sucesso!');
+
+			$('.nota form').find('input[type="text"], input[type="email"], textarea, select').val('');
+			$('.nota table tbody').empty();
+		}).fail(function(){
+			alerta('Verifique sua conexão');
+			$('.loading-full').fadeOut('slow');
+		});
+    });
+
+    $('.retirar form').submit(function(e){
+    	e.preventDefault();
+
+    	pontos = parseInt($('.pontos span').html());
+    	pontos_produto = parseInt($('.retirar [name="id_produto"]:checked').parents('.produto').find('.pontos').html().replace(' pontos', ''));
+
+    	if(pontos < pontos_produto)
+    	{
+    		alerta('Você não possui pontos suficientes para retirar este prêmio');
+    	}
+    	else
+    	{
+    		$('.loading-full').fadeIn('slow');
+			$.get(url_app+'retirada.php', $(this).serialize(), function(data){
+				$('.loading-full').fadeOut('slow');
+
+				data = $.parseJSON(data);
+		
+				alerta('Solicitação enviada. Aguarde nosso contato.');
+
+				$('.retirar form').find('input[type="text"], input[type="email"], textarea, select').val('');
+			}).fail(function(){
+				alerta('Verifique sua conexão');
+				$('.loading-full').fadeOut('slow');
+			});
+    	}    	
+    });
+
+    $('[name="nota"]').change(function(){
+    	var reader = new FileReader();
+	    reader.readAsDataURL($(this)[0].files[0]);
+	    reader.onload = function () {
+	      	$('[name="nota_fiscal"]').val(reader.result);
+	    };
+	    reader.onerror = function (error) {
+	      console.log('Error: ', error);
+	    };
+    });
+
+    $('.ico-menu').click(function(){
+    	$('.menu').slideDown('slow');
+    });
+
+    $('.menu .close').click(function(){
+    	$('.menu').slideUp('slow');
+    });
+
+    $('.sac form').submit(function(e){
+    	e.preventDefault();
+
+    	$('.loading-full').fadeIn('slow');
+		$.get(url_app+'sac.php', $(this).serialize(), function(data){ console.log(data);
+			$('.loading-full').fadeOut('slow');
+
+			alerta('SAC enviado com sucesso. Aguarde nosso contato.');
+
+			$('.sac form').find('input[type="text"], input[type="email"], textarea').val('');	
+			$('.nota table tbody').empty();
+		}).fail(function(){
+			alerta('Verifique sua conexão');
+			$('.loading-full').fadeOut('slow');
+		});
+    });
+
+    $('.esqueci').click(function(){
+    	if($('.login [name="senha"]').is(':visible'))
+    	{
+    		$('.login [name="senha"]').fadeOut('slow').attr('required', false);
+	    	$('.login [name="email"]').attr('placeholder', 'Digite o seu e-mail');
+	    	$('.login button').html('Recuperar');
+	    	$('.esqueci').html('Voltar para o login');
+    	}
+    	else
+    	{
+    		$('.login [name="senha"]').fadeIn('slow').attr('required', true);
+	    	$('.login [name="email"]').attr('placeholder', 'E-mail');
+	    	$('.login button').html('Entrar');
+	    	$('.esqueci').html('Esqueci minha senha');
+    	}    	
+    });
+});
+</script>
 </head>
-
-<body>
-    <div class="app">
-        <h1>PhoneGap</h1>
-        <div id="registration" class="blink">
-            <p class="event waiting">Requesting Registration ID</p>
-            <p class="event received">Registered</p>
-        </div>
-    </div>
-    <script type="text/javascript" src="cordova.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
-    <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript">
-        app.initialize();
-
-        $.get('http://www.pearldrumbrasil.com.br/app/app/noticias.php', {'tipo':'noticia'}, function(data){
-            data = $.parseJSON(data);
-            alert(data[0].titulo);
-        });
-    </script>
+<body>		
+	<div class="loading-full">
+		<div class="sk-circle">
+			<div class="sk-circle1 sk-child"></div>
+			<div class="sk-circle2 sk-child"></div>
+			<div class="sk-circle3 sk-child"></div>
+			<div class="sk-circle4 sk-child"></div>
+			<div class="sk-circle5 sk-child"></div>
+			<div class="sk-circle6 sk-child"></div>
+			<div class="sk-circle7 sk-child"></div>
+			<div class="sk-circle8 sk-child"></div>
+			<div class="sk-circle9 sk-child"></div>
+			<div class="sk-circle10 sk-child"></div>
+			<div class="sk-circle11 sk-child"></div>
+			<div class="sk-circle12 sk-child"></div>
+		</div>
+	</div>
+	<div class="entrada">
+		<div class="sk-circle">
+			<div class="sk-circle1 sk-child"></div>
+			<div class="sk-circle2 sk-child"></div>
+			<div class="sk-circle3 sk-child"></div>
+			<div class="sk-circle4 sk-child"></div>
+			<div class="sk-circle5 sk-child"></div>
+			<div class="sk-circle6 sk-child"></div>
+			<div class="sk-circle7 sk-child"></div>
+			<div class="sk-circle8 sk-child"></div>
+			<div class="sk-circle9 sk-child"></div>
+			<div class="sk-circle10 sk-child"></div>
+			<div class="sk-circle11 sk-child"></div>
+			<div class="sk-circle12 sk-child"></div>
+		</div>
+	</div>
+	<div class="alert-full">
+		<div class="content-alert"></div>
+	</div>
+	<div class="login">
+		<div class="box">
+			<img src="www/imagens/logo.png" class="logo">
+			<form class="form">
+				<input type="email" name="email" required placeholder="E-mail">
+				<input type="password" name="senha" required placeholder="Senha">
+				<div class="esqueci">Esqueci minha senha</div>
+				<button>Entrar</button>
+				<div class="cadastre-se">Cadastre-se</div>
+			</form>
+		</div>		
+	</div>
+	<div class="cadastro">
+		<div class="box">
+			<div class="titulo">Cadastre-se</div>
+			<form class="form">
+				<input type="text" name="nome" required placeholder="Nome completo">
+				<select name="estado" required>
+					<option value="">Estado</option>					
+					<option value="AC">AC</option>
+					<option value="AL">AL</option>
+					<option value="AP">AP</option>
+					<option value="AM">AM</option>
+					<option value="BA">BA</option>
+					<option value="CE">CE</option>
+					<option value="DF">DF</option>
+					<option value="ES">ES</option>
+					<option value="GO">GO</option>
+					<option value="MA">MA</option>
+					<option value="MT">MT</option>
+					<option value="MS">MS</option>
+					<option value="MG">MG</option>
+					<option value="PA">PA</option>
+					<option value="PB">PB</option>
+					<option value="PR">PR</option>
+					<option value="PE">PE</option>
+					<option value="PI">PI</option>
+					<option value="RJ">RJ</option>
+					<option value="RN">RN</option>
+					<option value="RS">RS</option>
+					<option value="RO">RO</option>
+					<option value="RR">RR</option>
+					<option value="SC">SC</option>
+					<option value="SP">SP</option>
+					<option value="SE">SE</option>
+					<option value="TO">TO</option>
+				</select>
+				<input type="text" name="cidade" required placeholder="Cidade">
+				<input type="email" name="email" required placeholder="E-mail">
+				<input type="password" name="senha" required minlength="5" placeholder="Senha">
+				<button>Cadastrar</button>
+				<div class="login-button">Login</div>
+			</form>
+		</div>		
+	</div>
+	<div class="mobile-box">
+		<div class="box-menu">
+			<div class="box-logo">
+				<div class="ico-menu"></div>
+				<img src="www/imagens/logo.png">
+			</div>
+			<div class="menu">
+				<div class="close"></div>
+				<ul>
+					<li>
+						<div class="label">Início</div>
+					</li>
+					<li>
+						<div class="label">Notícias</div>
+					</li>
+					<li>
+						<div class="label">Eventos</div>
+					</li>
+					<li>
+						<div class="label">Enviar nota fiscal</div>
+					</li>
+					<li>
+						<div class="label">Resgatar brindes</div>
+					</li>
+					<li>
+						<div class="label">Meus dados</div>
+					</li>
+					<li>
+						<div class="label">SAC</div>
+					</li>
+					<li>
+						<div class="label">Site Pearl</div>
+					</li>
+					<li>
+						<div class="label">Sair</div>
+					</li>
+				</ul>
+			</div>		 
+			<div class="clear"></div>
+			<div class="content">
+				<div class="ola">Olá <span></span></div>
+				<div class="pontos">Você possui <span></span> pontos</div>
+				<div class="lista"></div>
+			</div>			
+		</div>		
+		<div class="noticias">
+			<div class="box">
+				<div class="content">
+					<ul class="menu-noticias">
+						<li tipo="noticia">Notícias</li>
+						<li tipo="evento">Eventos</li>
+					</ul>				
+					<div class="clear"></div>
+					<br><br>
+					<div class="lista"></div>
+				</div>			
+			</div>		
+		</div>	
+		<div class="noticias">
+			<div class="box">
+				<div class="content">
+					<div class="lista"></div>
+				</div>			
+			</div>		
+		</div>	
+		<div class="nota">
+			<div class="box">			
+				<div class="content">
+					<form class="form2">
+						<div class="titulo">Enviar nota fiscal</div>
+						<p>
+							TROQUE SEUS PONTOS POR BRINDES EXCLUSIVOS: <br>
+							Sempre que comprar um produto Pearl mande sua nota fiscal, acumule pontos e troque por brindes exclusivos.
+						</p>
+						<input type="hidden" name="id_usuario">
+						<input type="text" name="cpf" required placeholder="CPF">
+						<input type="text" name="telefone" required placeholder="Telefone">
+						<div class="input">
+							Nota fiscal (pdf ou imagem legível):<br>
+							<input type="file" name="nota" required placeholder="Nota">	
+						</div>
+						<input type="hidden" name="nota_fiscal">								
+						<br>	
+						<button>Enviar</button>
+					</form>
+				</div>			
+			</div>		
+		</div>
+		<div class="retirar">
+			<div class="box">
+				<div class="content">
+					<form class="form2">
+						<div class="titulo">Resgatar Brindes</div>
+						<p>
+							VEJA A SUA PONTUAÇÃO<br>
+							Suas notas fiscais estão acumulando pontos, veja o que você já ganhou. Acumule mais e troque por brindes ainda mais valiosos.
+						</p>
+						<input type="hidden" name="id_usuario">
+						<div class="retorno"></div>		
+						<button>Retirar prêmio</button>
+					</form>
+				</div>			
+			</div>		
+		</div>
+		<div class="usuario">
+			<div class="box">
+				<div class="content">
+					<form class="form2">
+						<input type="hidden" name="id_usuario">
+						<input type="text" name="nome" required placeholder="Nome">
+						<select name="estado" required>
+							<option value="">Estado</option>					
+							<option value="AC">AC</option>
+							<option value="AL">AL</option>
+							<option value="AP">AP</option>
+							<option value="AM">AM</option>
+							<option value="BA">BA</option>
+							<option value="CE">CE</option>
+							<option value="DF">DF</option>
+							<option value="ES">ES</option>
+							<option value="GO">GO</option>
+							<option value="MA">MA</option>
+							<option value="MT">MT</option>
+							<option value="MS">MS</option>
+							<option value="MG">MG</option>
+							<option value="PA">PA</option>
+							<option value="PB">PB</option>
+							<option value="PR">PR</option>
+							<option value="PE">PE</option>
+							<option value="PI">PI</option>
+							<option value="RJ">RJ</option>
+							<option value="RN">RN</option>
+							<option value="RS">RS</option>
+							<option value="RO">RO</option>
+							<option value="RR">RR</option>
+							<option value="SC">SC</option>
+							<option value="SP">SP</option>
+							<option value="SE">SE</option>
+							<option value="TO">TO</option>
+						</select>
+						<input type="text" name="cidade" required placeholder="Cidade">
+						<input type="text" name="cpf" required placeholder="CPF">
+						<input type="text" name="telefone" required placeholder="Telefone">
+						<input type="email" name="email" required placeholder="E-mail">
+						<input type="password" name="senha" required minlength="5" placeholder="Senha">			
+						<button>Editar</button>
+					</form>
+				</div>			
+			</div>		
+		</div>
+		<div class="sac">
+			<div class="box">
+				<div class="content">
+					<form class="form2">
+						<div class="titulo">SAC</div>
+						<p>Entre em contato pelo formulário abaixo</p>
+						<input type="text" name="nome" required placeholder="Nome">
+						<input type="text" name="telefone" required placeholder="Telefone">
+						<input type="email" name="email" required placeholder="E-mail">
+						<input type="text" name="assunto" required placeholder="Assunto">
+						<textarea name="mensagem" required placeholder="Mensagem"></textarea>			
+						<button>Enviar</button>
+					</form>
+				</div>			
+			</div>		
+		</div>
+		<div style="display:none;" class="elementos">
+			<div class="noticia">
+				<div class="titulo"></div>
+				<div class="data"></div>
+				<div class="foto"></div>
+				<div class="texto"></div>
+				<div class="ver">Ver notícia</div>
+			</div>
+			<div class="noticia detalhe">
+				<div class="titulo"></div>
+				<div class="data"></div>
+				<div class="foto large"></div>
+				<div class="texto"></div>
+				<div class="ver voltar">Voltar</div>
+			</div>
+			<label class="produto">
+				<input type="radio" name="id_produto" required>
+				<div class="foto"></div>
+				<div class="nome"></div>
+				<div class="pontos"></div>
+			</label>
+		</div>
+	</div>
 </body>
-
 </html>
