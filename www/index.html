@@ -218,7 +218,10 @@ $(document).ready(function() {
 	});
 
 	$('.menu li').click(function(){
-		$('.noticias, .nota, .retirar, .usuario').stop(true,true).fadeOut('slow');
+		if($(this).index() != 7)
+		{
+			$('.noticias, .nota, .retirar, .usuario').stop(true,true).fadeOut('slow');
+		}		
 
 		if($(this).index() == 0){ $('.noticias:eq(0)').stop(true,true).fadeIn('slow'); load_noticias(); }
 		if($(this).index() == 1){ $('.noticias:eq(0)').stop(true,true).fadeIn('slow', function(){$('.noticias .menu-noticias li:eq(0)').click();}); }
