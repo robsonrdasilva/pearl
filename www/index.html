@@ -255,6 +255,7 @@ $(document).ready(function() {
 			$('.noticias:eq(1) .noticia .titulo').html(noticia.titulo);
 			$('.noticias:eq(1) .noticia .data').html(noticia.data);
 			$('.noticias:eq(1) .noticia .texto').html(noticia.texto);
+			$('.noticias:eq(1) .noticia iframe').attr('src', noticia.comentarios);
 
 			$('html, body').animate({scrollTop:0});
 
@@ -401,7 +402,6 @@ $(document).ready(function() {
 </script>
 </head>
 <body>		
-	<iframe src="http://www.facebook.com/plugins/comments.php?href=http://techcrunch.com/2014/09/17/life-is-tough/" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100%; height:3806px;" allowTransparency="true"></iframe>
 	<div class="loading-full">
 		<div class="sk-circle">
 			<div class="sk-circle1 sk-child"></div>
@@ -671,6 +671,7 @@ $(document).ready(function() {
 				<div class="data"></div>
 				<div class="foto large"></div>
 				<div class="texto"></div>
+				<iframe src="" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100%; height:3806px;" allowTransparency="true"></iframe>
 				<div class="ver voltar">Voltar</div>
 			</div>
 			<label class="produto">
