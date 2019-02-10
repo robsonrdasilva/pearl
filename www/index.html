@@ -397,7 +397,7 @@ $(document).ready(function() {
 	    	$('.login button').html('Entrar');
 	    	$('.esqueci').html('Esqueci minha senha');
     	}    	
-    });
+    });    
 });
 </script>
 </head>
@@ -682,5 +682,32 @@ $(document).ready(function() {
 			</label>
 		</div>
 	</div>
+	<script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+        app.initialize();
+
+        var push = PushNotification.init({
+		  "android": {
+		    "senderID": "XXXXXXXX"
+		  },
+		  "browser": {},
+		  "ios": {
+		    "sound": true,
+		    "vibration": true,
+		    "badge": true
+		  },
+		  "windows": {}
+		});
+
+		push.on('notification', function(data) {
+		  navigator.notification.alert(
+		    'Mensagem',         // message
+		    null,                 // callback
+		    'Teste',           // title
+		    'Ok'                  // buttonName
+		  );
+		});
+    </script>
 </body>
 </html>
